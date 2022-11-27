@@ -10,7 +10,7 @@
   
   In a linear sequential (or contiguous) list, the elements, in addition to being in a logical sequence, are also physically in sequence. The simplest way to accommodate a linear list on a computer is through the use of a vector.
 
-  ![Linear sequential](/_notes/assets/Linked_1.jpg)
+  ![Linear sequential](./assets/linked1.jpg)
   Sequential linear list example
 
 
@@ -23,7 +23,7 @@
       - May have unused allocated memory;
       - It can be difficult to add or remove elements and need to do
       displacements.
-    ![list with empty spaces](/_notes/assets/Linked_2.jpg)
+    ![list with empty spaces](./assets/linked2.jpg)
     
     Example of a linear list with unused spaces
 
@@ -31,7 +31,7 @@
   
   - Linked list or linked list is a sparse linear list,that is, the elements are not necessarily stored sequentially in memory, but the logical order between the elements that make up the list is maintained.
   
-    ![linked list example](/_notes/assets/Linked_3.jpg)
+    ![linked list example](./assets/linked3.jpg)
     Linked list example
 
   - Benefits:
