@@ -16,9 +16,66 @@ type BinarySearchTree struct {
 	root *Node
 }
 
-func deleteTree(currentNode *Node) *BinarySearchTree {
-	return &BinarySearchTree{
-		root: nil,
+func (bst *BinarySearchTree) getSucessor(
+	sucessorStudent *student.Student,
+	temporaryNode *Node,
+) {
+	temporaryNode = temporaryNode.rightChild
+
+	for temporaryNode.leftChild != nil {
+		temporaryNode = temporaryNode.leftChild
+	}
+
+	*sucessorStudent = temporaryNode.student
+}
+
+func (bst *BinarySearchTree) deleteNode(currentNode *Node) {
+	// Case 1: Has none or one child
+	if currentNode.leftChild == nil {
+		*currentNode = *currentNode.rightChild
+		return
+	}
+
+	// Case 2: Case 1 and has only one child in right
+	if currentNode.rightChild == nil {
+		*currentNode = *currentNode.leftChild
+		return
+	}
+
+	// Case 3: Has two childrens
+	var sucessorStudent student.Student
+
+	bst.getSucessor(&sucessorStudent, currentNode)
+
+	currentNode.student = sucessorStudent
+
+	bst.removeSearch(sucessorStudent, currentNode.rightChild)
+}
+
+func (bst *BinarySearchTree) removeSearch(
+	student student.Student,
+	currentNode *Node,
+) {
+	if student.GetRa() < currentNode.student.GetRa() {
+		bst.removeSearch(student, currentNode.leftChild)
+		return
+	}
+
+	if student.GetRa() > currentNode.student.GetRa() {
+		bst.removeSearch(student, currentNode.rightChild)
+		return
+	}
+
+	bst.deleteNode(currentNode)
+}
+
+func deleteTree(currentNode *Node) {
+	if currentNode == nil {
+		deleteTree(currentNode.leftChild)
+
+		deleteTree(currentNode.rightChild)
+
+		currentNode = nil
 	}
 }
 
@@ -29,10 +86,8 @@ func New() *BinarySearchTree {
 	}
 }
 
-func (bst *BinarySearchTree) Delete(currentNode *Node) *BinarySearchTree {
-	return &BinarySearchTree{
-		root: nil,
-	}
+func (bst *BinarySearchTree) DeleteTree(currentNode *Node) {
+	deleteTree(bst.root)
 }
 
 func (bst *BinarySearchTree) GetRoot() *Node {
@@ -102,10 +157,53 @@ func (bst *BinarySearchTree) Find(student *student.Student, found *bool) {
 	}
 }
 
-func (bst *BinarySearchTree) Remove(student student.Student) {}
+func (bst *BinarySearchTree) Remove(student student.Student) {
+	if bst.IsEmpty() {
+		fmt.Println("Binary Search Tree is empty")
+		return
+	}
 
-func (bst *BinarySearchTree) PrintPreOrder(currentNode *Node) {}
+	bst.removeSearch(student, bst.root)
+}
 
-func (bst *BinarySearchTree) PrintInOrder(currentNode *Node) {}
+func (bst *BinarySearchTree) PrintPreOrder(currentNode *Node) {
 
-func (bst *BinarySearchTree) PrintPostOrder(currentNode *Node) {}
+	if currentNode != nil {
+		fmt.Printf("%s: %d\n",
+			currentNode.student.GetName(),
+			currentNode.student.GetRa(),
+		)
+
+		bst.PrintPreOrder(currentNode.leftChild)
+
+		bst.PrintPreOrder(currentNode.rightChild)
+	}
+}
+
+func (bst *BinarySearchTree) PrintInOrder(currentNode *Node) {
+
+	if currentNode != nil {
+		bst.PrintInOrder(currentNode.leftChild)
+
+		fmt.Printf("%s: %d\n",
+			currentNode.student.GetName(),
+			currentNode.student.GetRa(),
+		)
+
+		bst.PrintInOrder(currentNode.rightChild)
+	}
+}
+
+func (bst *BinarySearchTree) PrintPostOrder(currentNode *Node) {
+
+	if currentNode != nil {
+		bst.PrintPostOrder(currentNode.leftChild)
+
+		bst.PrintPostOrder(currentNode.rightChild)
+
+		fmt.Printf("%s: %d\n",
+			currentNode.student.GetName(),
+			currentNode.student.GetRa(),
+		)
+	}
+}
