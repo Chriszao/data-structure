@@ -1,0 +1,10 @@
+go 1.18
+
+use (
+	./binarySearchTree
+	./dinamic_queue
+	./dinamic_stack
+	./hashTable
+	./queue
+	./stack
+)
